@@ -1,4 +1,4 @@
-![Matura biologia Baner](./banner-1024x500.png)]
+![Matura biologia Baner](./banner-1024x500.png)
 
 # Introduction
 
