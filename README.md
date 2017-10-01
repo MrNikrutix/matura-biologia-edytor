@@ -1,4 +1,4 @@
-![Matura Biologia Baner](./readme-data/banner-1024x500)
+![Matura biologia Baner](./banner-1024x500.png)]
 
 # Introduction
 
