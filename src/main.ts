@@ -9,3 +9,6 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule);
+
+window['root-dir'] = __dirname;
+console.log(window['root-dir']);

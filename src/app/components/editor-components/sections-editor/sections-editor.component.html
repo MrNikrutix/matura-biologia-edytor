@@ -1,3 +1,47 @@
-<p>
-  sections-editor works!
-</p>
+<md-list>
+  <h3 md-subheader>Sekcje</h3>
+  <md-list-item *ngFor="let section of sections">
+    <md-icon md-list-icon>donut_large</md-icon>
+    <h4 md-line>{{ section.title }}</h4>
+    <p md-line>{{ section.subtitle }}</p>
+    <p align='right'>
+      <button md-icon-button color='accent' (click)='edit(section)'><md-icon>mode_edit</md-icon></button>
+    </p>
+  </md-list-item>
+</md-list>
+
+<md-card *ngIf='sectionToEdit'>
+  <md-card-title>
+    Edytuj sekcję - {{ sectionToEdit.title }}
+  </md-card-title>
+
+  <md-card-content>
+    <md-grid-list cols="2" rowHeight="2:1">
+      <md-grid-tile>
+        <div>
+          <md-form-field>
+            <input mdInput placeholder='Tytuł' [(ngModel)]='tempSection.title'>
+            <md-icon mdSuffix>mode_edit</md-icon>
+          </md-form-field>
+          <br>
+          <md-form-field>
+            <input mdInput placeholder='Podtytuł' [(ngModel)]='tempSection.subtitle'>
+            <md-icon mdSuffix>mode_edit</md-icon>
+          </md-form-field>
+          <br>
+          <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
+        </div>
+      </md-grid-tile>
+
+      <md-grid-tile>
+        <md-card style='max-width: 500px'>
+          <img [src]='sectionImage(tempSection.background)' style='width: 100%; height: auto;' />
+        </md-card>
+      </md-grid-tile>
+    </md-grid-list>
+  </md-card-content>
+
+  <md-card-actions style='display: flex; justify-content: flex-end'>
+    <button md-raised-button [disabled]='!hasSomethingBeenEdited' color='primary' (click)='saveEditChanges()'>Zapisz zmiany</button>
+  </md-card-actions>
+</md-card>

@@ -16,12 +16,18 @@ export class ChooseRepoComponent {
   public cloneButtonDisabled = false;
 
   constructor(public snackBar: MdSnackBar) {
+    window['repo-location'] = 'matura-biologia';
+
+    if ((window['root-dir'] as string).split('\\').pop() == 'dist') {
+      window['repo-location'] = '../matura-biologia';
+    }
+
     fs.stat('matura-biologia', (err, stats) => {
       if(!err) {
         console.log('local repo found');
         this.editButtonDisabled = false;
       } else {
-        console.log('no repo found');
+        console.log('repo not found');
       }
     });
   }

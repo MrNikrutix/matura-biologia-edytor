@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 
 class Link {
-  constructor(public name: string, public href: string = '') {}
+  constructor(
+    public name: string, 
+    public href: string = ''
+  ) {}
 }
 
 @Component({
@@ -12,8 +15,8 @@ class Link {
 export class RepoEditorComponent {
   public links = [
     new Link('Sekcje')
-  ];
+  ];  
 
-  constructor() { }
+  constructor() {}
 
 }

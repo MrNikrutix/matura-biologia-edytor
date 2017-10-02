@@ -47,6 +47,7 @@
     "@angular/platform-browser": "4.4.3",
     "@angular/platform-browser-dynamic": "4.4.3",
     "@angular/router": "4.4.3",
+    "base64-img": "^1.0.3",
     "core-js": "2.4.1",
     "enhanced-resolve": "3.3.0",
     "rxjs": "5.4.3",

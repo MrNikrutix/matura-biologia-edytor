@@ -23,7 +23,10 @@ import {
   MatProgressSpinnerModule,
   MdSnackBarModule,
   MatTabsModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MdFormFieldModule,
+  MdInputModule,
+  MatGridListModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,7 +44,10 @@ const materialModules = [
   MatProgressSpinnerModule,
   MdSnackBarModule,
   MatTabsModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MdFormFieldModule,
+  MdInputModule,
+  MatGridListModule
 ];
 
 @NgModule({
