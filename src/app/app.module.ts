@@ -22,11 +22,14 @@ import {
   MatListModule,
   MatProgressSpinnerModule,
   MdSnackBarModule,
+  MatTabsModule,
+  MatSidenavModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChooseRepoComponent } from './components/choose-repo/choose-repo.component';
 import { RepoEditorComponent } from './components/repo-editor/repo-editor.component';
+import { SectionsEditorComponent } from './components/editor-components/sections-editor/sections-editor.component';
 
 const materialModules = [
   MatButtonModule,
@@ -36,7 +39,9 @@ const materialModules = [
   MatCardModule,
   MatListModule,
   MatProgressSpinnerModule,
-  MdSnackBarModule
+  MdSnackBarModule,
+  MatTabsModule,
+  MatSidenavModule
 ];
 
 @NgModule({
@@ -44,7 +49,8 @@ const materialModules = [
     AppComponent,
     HomeComponent,
     ChooseRepoComponent,
-    RepoEditorComponent
+    RepoEditorComponent,
+    SectionsEditorComponent
   ],
   imports: [
     BrowserAnimationsModule,

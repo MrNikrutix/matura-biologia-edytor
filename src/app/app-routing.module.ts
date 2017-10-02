@@ -3,6 +3,7 @@ import { ChooseRepoComponent} from './components/choose-repo/choose-repo.compone
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RepoEditorComponent } from 'app/components/repo-editor/repo-editor.component';
+import { SectionsEditorComponent } from 'app/components/editor-components/sections-editor/sections-editor.component';
 
 const routes: Routes = [
     {
@@ -15,7 +16,18 @@ const routes: Routes = [
     },
     {
       path: 'repo-editor',
-      component: RepoEditorComponent
+      component: RepoEditorComponent,
+      children: [
+        {
+          path: '',
+          redirectTo: 'sections-editor',
+          pathMatch: 'full'
+        },
+        {
+          path: 'sections-editor',
+          component: SectionsEditorComponent
+        }
+      ]
     }
 ];
 
