@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  background: url(assets/background.jpg) no-repeat center fixed;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -6,4 +13,22 @@ html, body {
   height: 100%;
 }
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.fill-space {
+  flex: 1 1 auto;
+}
+
+.content {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.padding-top {
+  padding-top: 20vh;
+}
+
+@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+snack-bar-container.dark {
+  color: white;
+  background-color: rgb(50, 50, 50);
+}

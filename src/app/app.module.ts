@@ -18,23 +18,33 @@ import {
   MatMenuModule,
   MatToolbarModule,
   MatIconModule,
-  MatCardModule
+  MatCardModule,
+  MatListModule,
+  MatProgressSpinnerModule,
+  MdSnackBarModule,
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChooseRepoComponent } from './components/choose-repo/choose-repo.component';
+import { RepoEditorComponent } from './components/repo-editor/repo-editor.component';
 
 const materialModules = [
   MatButtonModule,
   MatMenuModule,
   MatToolbarModule,
   MatIconModule,
-  MatCardModule
+  MatCardModule,
+  MatListModule,
+  MatProgressSpinnerModule,
+  MdSnackBarModule
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ChooseRepoComponent,
+    RepoEditorComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.center-content {
+  display: flex; 
+  justify-content: center;
+}
+
+snack-bar-container.dark {
+  background-color: black;
+}

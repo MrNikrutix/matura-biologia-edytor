@@ -1,3 +1,39 @@
-<md-toolbar color="primary">
-  Material?
-</md-toolbar>
+<div class='content padding-top'>
+  <md-card>
+    <md-card-subtitle>
+      <md-icon>list</md-icon> Testowanie środowiska:
+    </md-card-subtitle>
+
+    <md-card-content>
+      <md-list>
+        <md-list-item *ngFor='let task of tasks' style='min-width: 500px'>
+          <code>{{ task.desc }}...</code>
+          <span class="fill-space"></span>
+          <md-spinner *ngIf='!task.status' style='height: 30px'></md-spinner>
+          <md-icon *ngIf='task.status' [style.color]='colorBasedOn(task.status)'>{{ task.status }}</md-icon>
+        </md-list-item>
+      </md-list>
+    </md-card-content>
+
+    <md-card-actions align='end'>
+        <span class="fill-space"></span>
+      <button [disabled]='!allTasksDoneSuccessfully' md-raised-button color='primary' [routerLink]="['/choose-repo']">dalej</button>
+    </md-card-actions>
+    
+  </md-card>
+
+  <md-card style='margin-top: 20px'>
+    <md-card-subtitle>
+      <md-icon>error</md-icon> Komunikaty błędów:
+    </md-card-subtitle>
+
+    <md-card-content>
+      <md-list>
+          <md-list-item *ngFor='let task of failedTasks'>
+            <code>Problem podczas "{{ task.desc }}": {{ task.errorResolution }}</code>
+          </md-list-item>
+      </md-list>
+    </md-card-content>
+    
+  </md-card>
+</div>

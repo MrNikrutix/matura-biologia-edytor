@@ -1,0 +1,21 @@
+<div class='container padding-top'>
+  <md-card>
+    <md-card-subtitle>
+      Zaopatrz się w materiały:
+    </md-card-subtitle>
+    <md-card-content class='center-content'>
+      <input type='url' mdInput placeholder='url' [(ngModel)]='repoLink' style='width: 285px' />
+      <button md-raised-button color='primary' [disabled]='cloneButtonDisabled' (click)='cloneRepo()'>Klonuj repozytorium</button>
+    </md-card-content>
+  </md-card>
+  <p>Co chcesz zrobić?</p>
+  <md-card>
+    <md-card-subtitle>
+      Przejdź do rzeczy:
+    </md-card-subtitle>
+
+    <md-card-content class='center-content'>
+      <button md-raised-button color='primary' [disabled]='editButtonDisabled' [routerLink]="['/repo-editor']">Edytuj repozytorium</button>
+    </md-card-content>
+  </md-card>
+</div>
