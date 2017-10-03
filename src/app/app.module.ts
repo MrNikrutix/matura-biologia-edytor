@@ -33,6 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChooseRepoComponent } from './components/choose-repo/choose-repo.component';
 import { RepoEditorComponent } from './components/repo-editor/repo-editor.component';
 import { SectionsEditorComponent } from './components/editor-components/sections-editor/sections-editor.component';
+import { RepoStatusComponent } from './components/repo-status/repo-status.component';
+import { RepoPullRequestComponent } from './components/repo-pull-request/repo-pull-request.component';
 
 const materialModules = [
   MatButtonModule,
@@ -56,7 +58,9 @@ const materialModules = [
     HomeComponent,
     ChooseRepoComponent,
     RepoEditorComponent,
-    SectionsEditorComponent
+    SectionsEditorComponent,
+    RepoStatusComponent,
+    RepoPullRequestComponent
   ],
   imports: [
     BrowserAnimationsModule,

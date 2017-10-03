@@ -1,25 +1,54 @@
 <div class='padding-top'>
   <md-card class='content'>
-    <div class='container'>
-        <md-card>
-          <md-card-subtitle>
-            Zaopatrz się w materiały:
-          </md-card-subtitle>
-          <md-card-content class='center-content'>
-            <input type='url' mdInput placeholder='url' [(ngModel)]='repoLink' style='width: 285px' />
-            <button md-raised-button color='primary' [disabled]='cloneButtonDisabled' (click)='cloneRepo()'>Klonuj repozytorium</button>
-          </md-card-content>
-        </md-card>
-        <p>Co chcesz zrobić?</p>
-        <md-card>
-          <md-card-subtitle>
-            Przejdź do rzeczy:
-          </md-card-subtitle>
-      
-          <md-card-content class='center-content'>
-            <button md-raised-button color='primary' [disabled]='editButtonDisabled' [routerLink]="['/repo-editor']">Edytuj repozytorium</button>
-          </md-card-content>
-        </md-card>
-      </div>
+      <md-grid-list cols="2" rowHeight="2:1">
+        <md-grid-tile>
+          <md-card>
+            <md-card-subtitle>
+              1. Zaopatrz się w materiały:
+            </md-card-subtitle>
+            <md-card-content class='center-content'>
+              <md-form-field style='width: 295px'>
+                <input type='url' mdInput placeholder='url' [(ngModel)]='repoLink' />
+              </md-form-field>
+              <button md-raised-button color='primary' [disabled]='cloneButtonDisabled' (click)='cloneRepo()'>Klonuj repozytorium</button>
+            </md-card-content>
+          </md-card>
+        </md-grid-tile>
+
+        <md-grid-tile>
+          <md-card>
+            <md-card-subtitle>
+              2. Zacznij edycję:
+            </md-card-subtitle>
+
+            <md-card-content class='center-content'>
+              <button md-raised-button color='primary' [disabled]='editButtonDisabled' [routerLink]="['/repo-editor']">Edytuj repozytorium</button>
+            </md-card-content>
+          </md-card>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-card>
+            <md-card-subtitle>
+              3. Sprawdź jakie zmiany wprowadzisz:
+            </md-card-subtitle>
+
+            <md-card-content class='center-content'>
+              <button md-raised-button color='primary' [disabled]='editButtonDisabled' [routerLink]="['/repo-status']">Sprawdź status repozytorium</button>
+            </md-card-content>
+          </md-card>
+        </md-grid-tile>
+
+        <md-grid-tile>
+          <md-card>
+            <md-card-subtitle>
+              4. Poproś o akceptację zmian:
+            </md-card-subtitle>
+
+            <md-card-content class='center-content'>
+              <button md-raised-button color='primary' [disabled]='editButtonDisabled' [routerLink]="['/repo-pull-request']">Dokonaj pull-requesta</button>
+            </md-card-content>
+          </md-card>
+        </md-grid-tile>
+      </md-grid-list>
   </md-card>
 </div>
