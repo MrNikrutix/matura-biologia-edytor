@@ -1,0 +1,27 @@
+.raw-text {
+  background-color: rgb(50, 50, 50);
+  color: white;
+}
+
+.edit-area {
+  width: 100%; 
+  height: 400px;
+}
+
+.render-area {
+  background-color: white;
+  color: black;
+
+  width: 100%;
+
+  border: 2px;
+}
+
+.align-content-to-right {
+  display: flex; 
+  justify-content: flex-end;
+}
+
+.padding-right {
+  padding-right: 40px;
+}

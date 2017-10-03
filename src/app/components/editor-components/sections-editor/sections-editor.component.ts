@@ -42,6 +42,9 @@ export class SectionsEditorComponent {
   
   public defaultBackground = '';
 
+  public tempNoteContent = null;
+  public tempNoteContentNote: Note = null;
+
   constructor(public snackBar: MdSnackBar) {
     // needed to keep sanity with live reload
     if(!window['repo-location']) {
@@ -53,6 +56,7 @@ export class SectionsEditorComponent {
 
   public editSection(section: Section) {
     this.cleanAfterNoteEdit();
+    this.cleanAfterNoteContentEdit();
 
     this.selectedSection = section;
 
@@ -70,6 +74,8 @@ export class SectionsEditorComponent {
   }
 
   public editNote(note: Note) {
+    console.log('edit note');
+    this.cleanAfterNoteContentEdit();
     this.selectedNote = note;
 
     if(this.noteToEdit === note) {
@@ -89,6 +95,24 @@ export class SectionsEditorComponent {
   public createNewNote() {
     this.editNote(new Note('', '', '', ''));
     this.tempNoteBackground = this.defaultBackground;
+  }
+
+  public createContentForNote(note: Note) {
+    this.tempNoteContentNote = note;
+
+    if(this.tempNoteContent !== null) {
+      return this.cleanAfterNoteContentEdit();
+    }
+    if(note.content) {
+      fs.readFile(`matura-biologia${note.content}`, (err, data) => {
+        if (err) this.snackBar.open(JSON.stringify(err), 'Ok', { duration: 5000 });
+        else {
+          this.tempNoteContent = data.toString();
+        }
+      });
+    } else {
+      this.tempNoteContent = '';
+    }
   }
 
   public smartImage(url: string, alternative: string) {
@@ -115,6 +139,13 @@ export class SectionsEditorComponent {
 
   public get doesSelectedSectionExist() {
     return this.sections.indexOf(this.selectedSection) >= 0;
+  }
+
+  public saveNoteContent() {
+    fs.writeFile(`matura-biologia${this.tempNoteContentNote.content}`, this.tempNoteContent, (err) => {
+      if(err) console.log(err);
+      else this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
+    });
   }
 
   public async saveSectionEditChanges() {
@@ -206,6 +237,10 @@ export class SectionsEditorComponent {
   private cleanAfterNoteEdit() {
     this.noteToEdit = null;
     this.tempNoteBackground = '';
+  }
+
+  private cleanAfterNoteContentEdit() {
+    this.tempNoteContent = null;
   }
 
   private readSectionsFromRepo() {
