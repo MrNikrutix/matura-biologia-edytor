@@ -44,6 +44,7 @@ export class ChooseRepoComponent {
       if(output.indexOf('already exists') >= 0) {
         this.snackBar.open('Repozytorium już istnieje', 'Ok', { duration: 2500, extraClasses: ['dark'] });
       } else if (output.indexOf('Cloning') >= 0) {
+        this.fixRepo();
         this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
       } else {
         console.log('error:');
@@ -55,6 +56,12 @@ export class ChooseRepoComponent {
         this.editButtonDisabled = true;
       }
 
+    });
+  }
+
+  private fixRepo() {
+    cp.exec(`cd matura-biologia && git remote remove origin && git remote add upstream ${this.repoLink}`, (err, stdout, stderr) => {
+      console.log(`fix repo result: ` + JSON.stringify([err, stdout, stderr]));
     });
   }
 }

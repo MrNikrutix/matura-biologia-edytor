@@ -1,3 +1,38 @@
-<p>
-  repo-pull-request works!
-</p>
+<md-card>
+  <md-card-title>
+    1. Konto
+  </md-card-title>
+  <md-card-subtitle>
+    Jeżeli nie masz jeszcze konta, to <button md-raised-button color='accent' (click)='openGithub()'>zarejestruj się</button> aby być w stanie dokonać pull requesta.
+  </md-card-subtitle>
+
+  <md-card-content>
+    <md-form-field style='width: 50%; min-width: 100px; max-width: 500px'>
+      <input mdInput #message maxlength='256' placeholder='Login' [(ngModel)]='username'>
+      <md-hint align="start"><strong>Nazwa twojego konta z portalu github.com</strong> </md-hint>
+      <md-hint align="end">{{message.value.length}} / 256</md-hint>
+    </md-form-field>
+    <button md-raised-button color='primary' [disabled]='!username' (click)='checkUserName()'>Sprawdź poprawność</button>
+    <md-icon *ngIf='latestUserNameCheck' [style.color]='colorBasedOn(latestUserNameCheck)'>{{ latestUserNameCheck }}</md-icon>
+  </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-title>
+    2. Zdalne własne repozytorium
+  </md-card-title>
+  <md-card-content>
+    <button md-raised-button color='primary' [disabled]='!isUserGood' (click)='checkIfRepoExistsOnGithub()'>Sprawdź czy posiadasz przygotowane repozytorium</button>
+    <md-icon *ngIf='latestRepoExistsOnGithubCheck' [style.color]='colorBasedOn(latestRepoExistsOnGithubCheck)'>{{ latestRepoExistsOnGithubCheck }}</md-icon>
+  </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-title>
+    3. Dodaj zmiany do własnego zdalnego repozytorium
+  </md-card-title>
+
+  <md-card-content>
+      <button md-raised-button color='primary' [disabled]='!(isUserGood && isRepoGood)' (click)='pushChangesToRemoteRepo()'>Po prostu kilknij ten przycisk</button>
+  </md-card-content>
+</md-card>
