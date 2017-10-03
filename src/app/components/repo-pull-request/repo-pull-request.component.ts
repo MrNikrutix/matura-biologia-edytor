@@ -16,12 +16,20 @@ export class RepoPullRequestComponent {
 
   constructor(private http: Http) { }
 
+  public get repoUrl() {
+    return `https://github.com/${this.username}/matura-biologia`;
+  }
+
   public get isUserGood() {
     return this.latestUserNameCheck == 'check';
   }
 
   public get isRepoGood() {
     return this.latestRepoExistsOnGithubCheck == 'check';
+  }
+
+  public pushChangesToRemoteRepo() {
+    cp.exec(`start CMD /c "cd matura-biologia & git remote add origin ${this.repoUrl} & git add . & git commit -m "my contribution..."  & git push origin master & pause"`);
   }
 
   public openGithub() {
@@ -34,7 +42,7 @@ export class RepoPullRequestComponent {
 
   public checkIfRepoExistsOnGithub() {
     this.latestRepoExistsOnGithubCheck = '...';
-    this.http.get(`https://github.com/${this.username}/matura-biologia`).subscribe((response) => {
+    this.http.get(this.repoUrl).subscribe((response) => {
       this.latestRepoExistsOnGithubCheck = 'check';
     }, (error) => {
       this.latestRepoExistsOnGithubCheck = 'error';
