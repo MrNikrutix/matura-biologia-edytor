@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import * as fs from 'fs';
 import { MdSnackBar } from '@angular/material';
 import * as base64Img from 'base64-img';
@@ -45,11 +45,14 @@ export class SectionsEditorComponent {
   public tempNoteContent = null;
   public tempNoteContentNote: Note = null;
 
-  constructor(public snackBar: MdSnackBar) {
+  public imgLocation = '';
+
+  constructor(public snackBar: MdSnackBar, private zone: NgZone) {
     // needed to keep sanity with live reload
     if(!window['repo-location']) {
       window['repo-location'] = '../matura-biologia';
     }
+    this.imgLocation = window['repo-location'];
     this.readSectionsFromRepo();
     this.loadDefaultBackground();
   }
@@ -66,7 +69,7 @@ export class SectionsEditorComponent {
 
     this.sectionToEdit = section;
     this.tempSection = new Section(section.title, section.subtitle, section.background);
-    this.tempSectionBackground = '';
+    this.tempSectionBackground = this.tempSection.background;
 
     if(this.doesSelectedSectionExist) {
       this.readNotesFromRepo(section);
@@ -84,7 +87,7 @@ export class SectionsEditorComponent {
 
     this.noteToEdit = note;
     this.tempNote = new Note(note.title, note.subtitle, note.background, note.content);
-    this.tempNoteBackground = '';
+    this.tempNoteBackground = this.tempNote.background;
   }
 
   public createNewSection() {
@@ -115,27 +118,41 @@ export class SectionsEditorComponent {
     }
   }
 
-  public smartImage(url: string, alternative: string) {
-    if (!url) {
-      return alternative ? alternative : this.defaultBackground;
+  public smartImage(url: string) {
+    if(url.indexOf('data:image') == 0) {
+      return url;
+    } else {
+      return this.imgLocation + url;
     }
-    return `./${window['repo-location']}${url}`;
   }
 
   public onFileSelect(event: any, target: string) {
     if (event.target.files && event.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e: any) => { this[target] = e.target.result; }
-        reader.readAsDataURL(event.target.files[0]);
+        console.log(event.target.files[0]);
+        cp.exec(`copy "${event.target.files[0].path}" "matura-biologia/totally-temporary-tmp.${event.target.files[0].name}"`, (err, stdout, stderr) => {
+          console.log([err, stdout, stderr]);
+          if(!err) {
+            base64Img.base64(`matura-biologia/totally-temporary-tmp.${event.target.files[0].name}`, (err, data) => {
+              if(err) console.log(err);
+              else {
+                this.zone.run(() => {
+                  this[target] = data;
+                  console.log(`loaded: matura-biologia/tmp.${event.target.files[0].name}`);
+                });
+              }
+            });
+          }
+        });
     }
   }
 
   public get hasSomethingBeenEditedInSelectedSection() {
-    return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempSectionBackground !== '';
+    return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempSectionBackground !== this.selectedSection.background;
   }
 
   public get hasSomethingBeenEditedInSelectedNote() {
-    return JSON.stringify(this.tempNote) !== JSON.stringify(this.selectedNote) || this.tempNoteBackground !== '';
+    return JSON.stringify(this.tempNote) !== JSON.stringify(this.selectedNote) || this.tempNoteBackground !== this.selectedNote.background;
   }
 
   public get doesSelectedSectionExist() {
@@ -156,20 +173,19 @@ export class SectionsEditorComponent {
   public async saveSectionEditChanges() {
     const promises = [];
 
-    if (this.tempSectionBackground) {
+    if (this.selectedSection.background != this.tempSectionBackground) {
       const ext = this.tempSectionBackground.split(';')[0].slice('data:image\\'.length);
-      const backgroundUrl = `/data/biology/background-images/${this.tempSection.title}.${ext}`;
-    
+      const dest = `/data/biology/background-images/`;
+      const backgroundUrl = `${dest}${this.tempSection.title}.${ext}`;
+      const filename = this.tempSection.title;
+
       this.tempSection.background = backgroundUrl;
 
-      const dest = `matura-biologia/data/biology/background-images/`;
-      const filename = this.tempSection.title;
-      
       promises.push(new Promise((resolve, reject) => {
-        base64Img.img(this.tempSectionBackground, dest, filename, (err, filepath) => err ? reject(err) : resolve());
+        base64Img.img(this.tempSectionBackground, 'matura-biologia' + dest, filename, (err, filepath) => err ? reject(err) : resolve());
       }));
-      
-      if (this.selectedSection.background) promises.push(new Promise((resolve, reject) => {
+
+      if (this.selectedSection.title !== this.tempSection.title && this.selectedSection.background) promises.push(new Promise((resolve, reject) => {
         fs.unlink(`matura-biologia${this.selectedSection.background}`, (err) => err ? reject(err) : resolve());
       }));
     }
@@ -195,6 +211,7 @@ export class SectionsEditorComponent {
 
     await Promise.all(promises);
 
+    console.log('about to clean...');
     this.cleanAfterSectionEdit();
     this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
   }
@@ -214,7 +231,7 @@ export class SectionsEditorComponent {
         base64Img.img(this.tempNoteBackground, 'matura-biologia' + dest, filename, (err, filepath) => err ? reject(err) : resolve());
       }));
 
-      if (this.selectedNote.background) promises.push(new Promise((resolve, reject) => {
+      if (this.selectedNote.background && this.selectedNote.background != this.tempNote.background) promises.push(new Promise((resolve, reject) => {
          fs.unlink(`matura-biologia${this.selectedNote.background}`, (err) => err ? reject(err) : resolve());
       }));
     }
@@ -252,6 +269,7 @@ export class SectionsEditorComponent {
   }
 
   private cleanAfterSectionEdit() {
+    console.log('after section edit');
     this.sectionToEdit = null;
     this.tempSectionBackground = '';
   }
