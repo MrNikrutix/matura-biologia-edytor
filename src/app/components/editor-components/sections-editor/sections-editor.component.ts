@@ -90,16 +90,16 @@ export class SectionsEditorComponent {
     throw 'unimplemented';
   }
 
-  public image(url: string, alternative: string) {
+  public smartImage(url: string, alternative: string) {
     if (!url) return this.defaultBackground;
     if (alternative) return alternative;
     return `./${window['repo-location']}${url}`;
   }
 
-  public onFileSelect(event: any, target: any) {
+  public onFileSelect(event: any, target: string) {
     if (event.target.files && event.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e: any) => { target = e.target.result; }
+        reader.onload = (e: any) => { this[target] = e.target.result; }
         reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -119,24 +119,22 @@ export class SectionsEditorComponent {
   public async saveSectionEditChanges() {
     const promises = [];
 
-    if(this.tempSectionBackground) {
+    if (this.tempSectionBackground) {
       const ext = this.tempSectionBackground.split(';')[0].slice('data:image\\'.length);
       const backgroundUrl = `/data/biology/background-images/${this.tempSection.title}.${ext}`;
     
       this.tempSection.background = backgroundUrl;
 
       const dest = `matura-biologia/data/biology/background-images/`;
-      const filename = `${this.tempSection.title}`;
+      const filename = this.tempSection.title;
       
       promises.push(new Promise((resolve, reject) => {
         base64Img.img(this.tempSectionBackground, dest, filename, (err, filepath) => err ? reject(err) : resolve());
       }));
       
-      promises.push(new Promise((resolve, reject) => {
-        if(this.selectedSection.background) fs.unlink(`matura-biologia${this.selectedSection.background}`, (err) => err ? reject(err) : resolve());
-        else resolve();
+      if (this.selectedSection.background) promises.push(new Promise((resolve, reject) => {
+        fs.unlink(`matura-biologia${this.selectedSection.background}`, (err) => err ? reject(err) : resolve());
       }));
-
     }
 
     if(this.selectedSection.title !== this.tempSection.title) {
@@ -158,8 +156,6 @@ export class SectionsEditorComponent {
       fs.writeFile(`matura-biologia/data/biology/sections.json`, JSON.stringify(this.sections), (err) => err ? reject(err) : resolve());
     }));
 
-    promises.push()
-
     await Promise.all(promises);
 
     this.cleanAfterSectionEdit();
@@ -167,7 +163,38 @@ export class SectionsEditorComponent {
   }
 
   public async saveNoteEditChanges() {
-    throw 'unimplemented';
+    const promises = [];
+
+    if (this.tempNoteBackground) {
+      const ext = this.tempNoteBackground.split(';')[0].slice('data:image\\'.length);
+      const dest = `/data/biology/notes/background-images/`;
+      const backgroundUrl = `${dest}${this.tempNote.title}.${ext}`;
+      const filename = this.tempNote.title;
+
+      this.tempNote.background = backgroundUrl;
+
+      promises.push(new Promise((resolve, reject) => {
+        base64Img.img(this.tempNoteBackground, 'matura-biologia' + dest, filename, (err, filepath) => err ? reject(err) : resolve());
+      }));
+
+      if (this.selectedNote.background) promises.push(new Promise((resolve, reject) => {
+         fs.unlink(`matura-biologia${this.selectedNote.background}`, (err) => err ? reject(err) : resolve());
+      }));
+    }
+
+    const index = this.notes.indexOf(this.selectedNote);
+    if(index >= 0)  this.notes[index] = this.tempNote;
+    else this.notes.push(this.tempNote);
+    console.log(this.notes);
+
+    promises.push(new Promise((resolve, reject) => { // yes, selectedSection here. Don't sleep dude
+      fs.writeFile(`matura-biologia/data/biology/notes/${this.selectedSection.title}.json`, JSON.stringify(this.notes), (err) => err ? reject(err) : resolve());
+    }));
+
+    await Promise.all(promises);
+
+    this.cleanAfterNoteEdit();
+    this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
   }
 
   private cleanAfterSectionEdit() {
@@ -190,8 +217,12 @@ export class SectionsEditorComponent {
 
   private readNotesFromRepo(section: Section) {
     fs.readFile(`matura-biologia/data/biology/notes/${section.title}.json`, (err, data) => {
-      if (err) this.notes = [];
-      this.notes = JSON.parse(data.toString());
+      if (err) {
+        this.notes = [];
+        console.log(err);
+      } else {
+        this.notes = JSON.parse(data.toString());
+      }
     });
   }
 
