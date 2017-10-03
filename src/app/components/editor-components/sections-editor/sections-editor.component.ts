@@ -214,6 +214,14 @@ export class SectionsEditorComponent {
       }));
     }
 
+    if(this.tempNote.content && this.tempNote.title !== this.selectedNote.title) {
+      this.tempNote.content = `/data/biology/notes/html/${this.tempNote.title}.html`;
+      
+      promises.push(new Promise((resolve, reject) => {
+        fs.rename(`matura-biologia${this.selectedNote.content}`, `matura-biologia${this.tempNote.content}`, (err) => err ? reject(err) : resolve());
+      }));
+    }
+
     const index = this.notes.indexOf(this.selectedNote);
     if(index >= 0)  this.notes[index] = this.tempNote;
     else this.notes.push(this.tempNote);
