@@ -14,7 +14,7 @@ class Link {
 })
 export class RepoEditorComponent {
   public links = [
-    new Link('Sekcje')
+    new Link('Sekcje', 'sections-editor')
   ];  
 
   constructor() {}

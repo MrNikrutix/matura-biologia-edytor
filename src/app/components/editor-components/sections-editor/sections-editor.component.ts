@@ -13,6 +13,15 @@ class Section {
   ) {}
 }
 
+class Note {
+  constructor(
+    title: string,
+    subtitle: string,
+    background: string,
+    content: string
+  ) {}
+}
+
 @Component({
   selector: 'app-sections-editor',
   templateUrl: './sections-editor.component.html',
@@ -22,9 +31,12 @@ export class SectionsEditorComponent {
   public sections: Section[] = [];
   public sectionToEdit: Section = null;
 
+  public notes: Note[] = [];
+
   public selectedSection: Section = null;
   public tempSection: Section = null;
   public tempBackground = '';
+  public defaultBackground = '';
 
   constructor(public snackBar: MdSnackBar) {
     // needed to keep sanity with live reload
@@ -32,9 +44,10 @@ export class SectionsEditorComponent {
       window['repo-location'] = '../matura-biologia';
     }
     this.readSectionsFromRepo();
+    this.loadDefaultBackground();
   }
 
-  public edit(section: Section) {
+  public editSection(section: Section) {
     this.selectedSection = section;
 
     if(this.sectionToEdit === section) {
@@ -42,16 +55,28 @@ export class SectionsEditorComponent {
     }
 
     this.sectionToEdit = section;
-    this.tempSection = new Section(
-      section.title,
-      section.subtitle,
-      section.background
-    );
+    this.tempSection = new Section(section.title, section.subtitle, section.background);
 
     this.tempBackground = '';
+
+    if(this.doesSelectedSectionExist) {
+      this.readNotesFromRepo(section);
+    }
+  }
+
+  public createNewSection() {
+    this.editSection(new Section('', '', ''));
+    this.tempBackground = this.defaultBackground;
+  }
+
+  public createThisNote() {
+    throw 'unimplemented';
   }
 
   public sectionImage(url: string) {
+    if(!url) {
+      return this.defaultBackground;
+    }
     if(this.tempBackground) {
       return this.tempBackground;
     }
@@ -70,11 +95,15 @@ export class SectionsEditorComponent {
     }
   }
 
-  public get hasSomethingBeenEdited() {
+  public get hasSomethingBeenEditedInSelectedSection() {
     return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempBackground !== '';
   }
 
-  public async saveEditChanges() {
+  public get doesSelectedSectionExist() {
+    return this.sections.indexOf(this.selectedSection) >= 0;
+  }
+
+  public async saveSectionEditChanges() {
     const promises = [];
 
     if(this.tempBackground) {
@@ -91,18 +120,32 @@ export class SectionsEditorComponent {
       }));
       
       promises.push(new Promise((resolve, reject) => {
-        fs.unlink(`matura-biologia${this.selectedSection.background}`, (err) => err ? reject(err) : resolve());
+        if(this.selectedSection.background) fs.unlink(`matura-biologia${this.selectedSection.background}`, (err) => err ? reject(err) : resolve());
+        else resolve();
       }));
 
     }
 
-    this.sections[this.sections.indexOf(this.selectedSection)] = this.tempSection;
+    if(this.selectedSection.title !== this.tempSection.title) {
+      promises.push(new Promise((resolve, reject) => {
+        fs.rename(`matura-biologia/data/biology/notes/${this.selectedSection.title}.json`, `matura-biologia/data/biology/notes/${this.tempSection.title}.json`, (err) => err ? reject(err) : resolve());
+      }));
+    }
+
+    const index = this.sections.indexOf(this.selectedSection);
+    if(index >= 0) {
+      this.sections[index] = this.tempSection;
+    } else {
+      this.sections.push(this.tempSection);
+    }
     console.log(this.sections);
 
     
     promises.push(new Promise((resolve, reject) => {
       fs.writeFile(`matura-biologia/data/biology/sections.json`, JSON.stringify(this.sections), (err) => err ? reject(err) : resolve());
     }));
+
+    promises.push()
 
     await Promise.all(promises);
 
@@ -117,12 +160,28 @@ export class SectionsEditorComponent {
 
   private readSectionsFromRepo() {
     fs.readFile(`matura-biologia/data/biology/sections.json`, (err, data) => {
-      if(err) {
-        this.snackBar.open(JSON.stringify(err), 'Ok', { duration: 5000 });
-      }
+      if (err) this.snackBar.open(JSON.stringify(err), 'Ok', { duration: 5000 });
       this.sections = JSON.parse(data.toString());
       console.log(this.sections);
     });
   }
 
+  private readNotesFromRepo(section: Section) {
+    fs.readFile(`matura-biologia/data/biology/notes/${section.title}.json`, (err, data) => {
+      if (err) this.notes = [];
+      this.notes = JSON.parse(data.toString());
+    });
+  }
+
+  private async saveNotes(section: Section) {
+    return new Promise((resolve, reject) => fs.writeFile(`matura-biologia/data/biology/notes/${section.title}.json`, JSON.stringify(this.notes), (err) => err ? reject(err) : resolve()));
+  }
+
+  private loadDefaultBackground() {
+    base64Img.base64('matura-biologia/data/defaults/default-card-image.jpg', (err, data) => {
+      if(err) console.log(err);
+      this.defaultBackground = data;
+      console.log('default background loaded');
+    });
+  }
 }
