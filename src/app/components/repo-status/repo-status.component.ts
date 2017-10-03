@@ -8,17 +8,46 @@ import * as cp from 'child_process';
   styleUrls: ['./repo-status.component.scss']
 })
 export class RepoStatusComponent {
-  public gitStatus = '';
+  public gitStatusResult = '';
 
-  public gitDiff = '';
+  public gitDiffResult = '';
+
+  public gitFetchUpstreamResult = '';
+
+  public gitRebaseUpstreamMasterResult = '';
 
   constructor() {
-    cp.exec(`cd matura-biologia && git status --porcelain`, (err, stdout, stderr) => {
-      this.gitStatus = stdout;
-    });
+    this.gitStatus();
+    this.gitDiff();
+   }
 
+   public gitStatus() {
+    cp.exec(`cd matura-biologia && git status --porcelain`, (err, stdout, stderr) => {
+      this.gitStatusResult = (stdout + stderr) || 'Ok.';
+    });
+   }
+
+   public gitDiff() {
     cp.exec(`cd matura-biologia && git diff`, (err, stdout, stderr) => {
-      this.gitDiff = stdout;
+      this.gitDiffResult = (stdout + stderr) || 'Ok.';
+    });
+   }
+
+   public gitFetchUpstream() {
+    cp.exec(`cd matura-biologia && git fetch upstream`, (err, stdout, stderr) => {
+      console.log([err, stdout, stderr]);
+      this.gitStatus();
+      this.gitDiff();
+      this.gitFetchUpstreamResult = (stdout + stderr) || 'Ok.';
+    });
+   }
+
+   public gitRebaseUpstreamMaster() {
+    cp.exec(`cd matura-biologia && git rebase upstream/master`, (err, stdout, stderr) => {
+      console.log([err, stdout, stderr]);
+      this.gitStatus();
+      this.gitDiff();
+      this.gitRebaseUpstreamMasterResult = (stdout + stderr) || 'Ok.';
     });
    }
 }

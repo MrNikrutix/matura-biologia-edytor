@@ -4,16 +4,44 @@
   </md-card-title>
 
   <md-card-content>
-    <pre><code>{{ gitStatus }}</code></pre>
+    <pre><code>{{ gitStatusResult }}</code></pre>
   </md-card-content>
 </md-card>
 
 <md-card>
-    <md-card-title>
-      git diff
-    </md-card-title>
-  
-    <md-card-content>
-      <pre><code>{{ gitDiff }}</code></pre>
-    </md-card-content>
-  </md-card>
+  <md-card-title>
+    git diff
+  </md-card-title>
+
+  <md-card-content>
+    <pre><code>{{ gitDiffResult }}</code></pre>
+  </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-title>
+    git fetch upstream
+  </md-card-title>
+
+  <md-card-subtitle>
+    <button md-raised-button color='accent' (click)='gitFetchUpstream()'>Wykonaj</button>, by zaciągnąć nowości z repozytorium (wymagane przed jakąkolwiek próbą robienia pull requestów)
+  </md-card-subtitle>
+
+  <md-card-content>
+    <pre><code>{{ gitFetchUpstreamResult }}</code></pre>
+  </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-title>
+    git rebase upstream/master
+  </md-card-title>
+
+  <md-card-subtitle>
+    <button md-raised-button color='accent' (click)='gitRebaseUpstreamMaster()'>Wykonaj</button> (by zaaplikować nowości)
+  </md-card-subtitle>
+
+  <md-card-content>
+    <pre><code>{{ gitRebaseUpstreamMasterResult }}</code></pre>
+  </md-card-content>
+</md-card>
