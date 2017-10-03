@@ -1,11 +1,3 @@
-<md-sidenav-container>
-  <md-sidenav opened='true' mode='side'>
-    <md-nav-list>
-        <a md-list-item *ngFor='let link of links'>{{ link.name }}</a>
-    </md-nav-list>
-  </md-sidenav>
-
-  <md-card class='editor-container'>
-    <router-outlet></router-outlet>
-  </md-card>
-</md-sidenav-container>
+<md-card class='editor-container'>
+  <router-outlet></router-outlet>
+</md-card>
