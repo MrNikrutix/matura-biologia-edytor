@@ -53,7 +53,7 @@ export class SectionsEditorComponent {
 
   public editSection(section: Section) {
     this.cleanAfterNoteEdit();
-    
+
     this.selectedSection = section;
 
     if(this.sectionToEdit === section) {
@@ -108,6 +108,10 @@ export class SectionsEditorComponent {
     return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempSectionBackground !== '';
   }
 
+  public get hasSomethingBeenEditedInSelectedNote() {
+    return JSON.stringify(this.tempNote) !== JSON.stringify(this.selectedNote) || this.tempNoteBackground !== '';
+  }
+
   public get doesSelectedSectionExist() {
     return this.sections.indexOf(this.selectedSection) >= 0;
   }
@@ -160,6 +164,10 @@ export class SectionsEditorComponent {
 
     this.cleanAfterSectionEdit();
     this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
+  }
+
+  public async saveNoteEditChanges() {
+    throw 'unimplemented';
   }
 
   private cleanAfterSectionEdit() {

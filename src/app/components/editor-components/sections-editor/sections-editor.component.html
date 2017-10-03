@@ -1,19 +1,23 @@
-<md-list>
-  <h3 md-subheader>Sekcje</h3>
-  <md-list-item *ngFor="let section of sections">
-    <md-icon md-list-icon>donut_large</md-icon>
-    <h4 md-line>{{ section.title }}</h4>
-    <p md-line>{{ section.subtitle }}</p>
-    <p align='right'>
-      <button md-icon-button color='accent' (click)='editSection(section)'><md-icon>mode_edit</md-icon></button>
-    </p>
-  </md-list-item>
-  <md-list-item style='display: flex; justify-content: flex-end; padding-right: 40px'>
-    <p>
-      <button md-icon-button color='primary' (click)='createNewSection()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
-    </p>
-  </md-list-item>
-</md-list>
+<md-card>
+  <md-card-title>
+    Sekcje
+  </md-card-title>
+  <md-list>
+    <md-list-item *ngFor="let section of sections">
+      <md-icon md-list-icon>donut_large</md-icon>
+      <h4 md-line>{{ section.title }}</h4>
+      <p md-line>{{ section.subtitle }}</p>
+      <p align='right'>
+        <button md-icon-button color='accent' (click)='editSection(section)'><md-icon>mode_edit</md-icon></button>
+      </p>
+    </md-list-item>
+    <md-list-item style='display: flex; justify-content: flex-end; padding-right: 40px'>
+      <p>
+        <button md-icon-button color='primary' (click)='createNewSection()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+      </p>
+    </md-list-item>
+  </md-list>
+</md-card>
 
 <md-card *ngIf='sectionToEdit'>
   <md-card-title>
@@ -71,10 +75,6 @@
       <button md-icon-button color='primary' (click)='createNewNote()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
     </p>
   </md-list-item>
-
-  <md-card-actions style='display: flex; justify-content: flex-end'>
-    <button md-raised-button [disabled]='!hasSomethingBeenEdited' color='primary'>Zapisz zmiany</button>
-  </md-card-actions>
 </md-card>
 
 <md-card *ngIf='noteToEdit'>
@@ -109,6 +109,6 @@
   </md-card-content>
 
   <md-card-actions style='display: flex; justify-content: flex-end'>
-    <button md-raised-button [disabled]='!hasSomethingBeenEditedInSelectedSection' color='primary' (click)='saveSectionEditChanges()'>Zapisz zmiany</button>
+    <button md-raised-button [disabled]='!hasSomethingBeenEditedInSelectedNote' color='primary' (click)='saveNoteEditChanges()'>Zapisz zmiany</button>
   </md-card-actions>
 </md-card>
