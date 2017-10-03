@@ -86,8 +86,9 @@ export class SectionsEditorComponent {
     this.tempSectionBackground = this.defaultBackground;
   }
 
-  public createThisNote() {
-    throw 'unimplemented';
+  public createNewNote() {
+    this.editNote(new Note('', '', '', ''));
+    this.tempNoteBackground = this.defaultBackground;
   }
 
   public smartImage(url: string, alternative: string) {
@@ -153,7 +154,7 @@ export class SectionsEditorComponent {
 
     
     promises.push(new Promise((resolve, reject) => {
-      fs.writeFile(`matura-biologia/data/biology/sections.json`, JSON.stringify(this.sections), (err) => err ? reject(err) : resolve());
+      fs.writeFile(`matura-biologia/data/biology/sections.json`, JSON.stringify(this.sections, null, 2), (err) => err ? reject(err) : resolve());
     }));
 
     await Promise.all(promises);
@@ -188,7 +189,7 @@ export class SectionsEditorComponent {
     console.log(this.notes);
 
     promises.push(new Promise((resolve, reject) => { // yes, selectedSection here. Don't sleep dude
-      fs.writeFile(`matura-biologia/data/biology/notes/${this.selectedSection.title}.json`, JSON.stringify(this.notes), (err) => err ? reject(err) : resolve());
+      fs.writeFile(`matura-biologia/data/biology/notes/${this.selectedSection.title}.json`, JSON.stringify(this.notes, null, 2), (err) => err ? reject(err) : resolve());
     }));
 
     await Promise.all(promises);
