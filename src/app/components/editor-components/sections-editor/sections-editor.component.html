@@ -34,13 +34,13 @@
             <md-icon mdSuffix>mode_edit</md-icon>
           </md-form-field>
           <br>
-          <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
+          <input type='file' placeholder='tło' (change)='onFileSelect($event, tempSectionBackground)' accept='image/*'>
         </div>
       </md-grid-tile>
 
       <md-grid-tile>
         <md-card style='max-width: 500px'>
-          <img [src]='sectionImage(tempSection.background)' style='width: 100%; height: auto;' />
+          <img [src]='image(tempSection.background, tempSectionBackground)' style='width: 100%; height: auto;' />
         </md-card>
       </md-grid-tile>
     </md-grid-list>
@@ -52,27 +52,63 @@
 </md-card>
 
 <md-card *ngIf='sectionToEdit && doesSelectedSectionExist'>
-    <md-card-title>
-      Notatki sekcji
-    </md-card-title>
-  
-    <md-list>
-      <md-list-item *ngFor='let note of notes'>
-        <md-icon md-list-icon>description</md-icon>
-        <h4 md-line>{{ note.title }}</h4>
-        <p md-line>{{ note.subtitle }}</p>
-        <p align='right'>
-          <button md-icon-button color='accent'><md-icon>mode_edit</md-icon></button>
-        </p>
-      </md-list-item>
-    </md-list>
-    <md-list-item style='display: flex; justify-content: flex-end; padding-right: 40px'>
-      <p>
-        <button md-icon-button color='primary' (click)='createNewNote()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+  <md-card-title>
+    Notatki sekcji
+  </md-card-title>
+
+  <md-list>
+    <md-list-item *ngFor='let note of notes'>
+      <md-icon md-list-icon>description</md-icon>
+      <h4 md-line>{{ note.title }}</h4>
+      <p md-line>{{ note.subtitle }}</p>
+      <p align='right'>
+        <button md-icon-button color='accent' (click)='editNote(note)'><md-icon>mode_edit</md-icon></button>
       </p>
     </md-list-item>
-  
-    <md-card-actions style='display: flex; justify-content: flex-end'>
-      <button md-raised-button [disabled]='!hasSomethingBeenEdited' color='primary'>Zapisz zmiany</button>
-    </md-card-actions>
-  </md-card>
+  </md-list>
+  <md-list-item style='display: flex; justify-content: flex-end; padding-right: 40px'>
+    <p>
+      <button md-icon-button color='primary' (click)='createNewNote()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+    </p>
+  </md-list-item>
+
+  <md-card-actions style='display: flex; justify-content: flex-end'>
+    <button md-raised-button [disabled]='!hasSomethingBeenEdited' color='primary'>Zapisz zmiany</button>
+  </md-card-actions>
+</md-card>
+
+<md-card *ngIf='noteToEdit'>
+  <md-card-title>
+    Edytuj notkę (metadane) - {{ noteToEdit.title }}
+  </md-card-title>
+
+  <md-card-content>
+    <md-grid-list cols="2" rowHeight="2:1">
+      <md-grid-tile>
+        <div>
+          <md-form-field>
+            <input mdInput placeholder='Tytuł' [(ngModel)]='tempNote.title'>
+            <md-icon mdSuffix>mode_edit</md-icon>
+          </md-form-field>
+          <br>
+          <md-form-field>
+            <input mdInput placeholder='Podtytuł' [(ngModel)]='tempNote.subtitle'>
+            <md-icon mdSuffix>mode_edit</md-icon>
+          </md-form-field>
+          <br>
+          <input type='file' placeholder='tło' (change)='onFileSelect($event, tempNoteBackground)' accept='image/*'>
+        </div>
+      </md-grid-tile>
+
+      <md-grid-tile>
+        <md-card style='max-width: 500px'>
+          <img [src]='image(tempNote.background, tempNoteBackground)' style='width: 100%; height: auto;' />
+        </md-card>
+      </md-grid-tile>
+    </md-grid-list>
+  </md-card-content>
+
+  <md-card-actions style='display: flex; justify-content: flex-end'>
+    <button md-raised-button [disabled]='!hasSomethingBeenEditedInSelectedSection' color='primary' (click)='saveSectionEditChanges()'>Zapisz zmiany</button>
+  </md-card-actions>
+</md-card>

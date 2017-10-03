@@ -15,10 +15,10 @@ class Section {
 
 class Note {
   constructor(
-    title: string,
-    subtitle: string,
-    background: string,
-    content: string
+    public title: string,
+    public subtitle: string,
+    public background: string,
+    public content: string
   ) {}
 }
 
@@ -30,12 +30,16 @@ class Note {
 export class SectionsEditorComponent {
   public sections: Section[] = [];
   public sectionToEdit: Section = null;
-
-  public notes: Note[] = [];
-
   public selectedSection: Section = null;
   public tempSection: Section = null;
-  public tempBackground = '';
+  public tempSectionBackground = '';
+  
+  public notes: Note[] = [];
+  public noteToEdit: Note = null;
+  public selectedNote: Note = null;
+  public tempNote: Note = null;
+  public tempNoteBackground = '';
+  
   public defaultBackground = '';
 
   constructor(public snackBar: MdSnackBar) {
@@ -48,46 +52,60 @@ export class SectionsEditorComponent {
   }
 
   public editSection(section: Section) {
+    this.cleanAfterNoteEdit();
+    
     this.selectedSection = section;
 
     if(this.sectionToEdit === section) {
-      return this.cleanAfterEdit();
+      return this.cleanAfterSectionEdit() 
     }
 
     this.sectionToEdit = section;
     this.tempSection = new Section(section.title, section.subtitle, section.background);
-    this.tempBackground = '';
+    this.tempSectionBackground = '';
 
     if(this.doesSelectedSectionExist) {
       this.readNotesFromRepo(section);
     }
   }
 
+  public editNote(note: Note) {
+    this.selectedNote = note;
+
+    if(this.noteToEdit === note) {
+      return this.cleanAfterNoteEdit();
+    }
+
+    this.noteToEdit = note;
+    this.tempNote = new Note(note.title, note.subtitle, note.background, note.content);
+    this.tempNoteBackground = '';
+  }
+
   public createNewSection() {
     this.editSection(new Section('', '', ''));
-    this.tempBackground = this.defaultBackground;
+    this.tempSectionBackground = this.defaultBackground;
   }
 
   public createThisNote() {
     throw 'unimplemented';
   }
 
-  public sectionImage(url: string) {
+  public image(url: string, alternative: string) {
     if (!url) return this.defaultBackground;
-    if (this.tempBackground) return this.tempBackground;
+    if (alternative) return alternative;
     return `./${window['repo-location']}${url}`;
   }
 
-  public onFileSelect(event) {
+  public onFileSelect(event: any, target: any) {
     if (event.target.files && event.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e: any) => { this.tempBackground = e.target.result; }
+        reader.onload = (e: any) => { target = e.target.result; }
         reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   public get hasSomethingBeenEditedInSelectedSection() {
-    return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempBackground !== '';
+    return JSON.stringify(this.tempSection) !== JSON.stringify(this.selectedSection) || this.tempSectionBackground !== '';
   }
 
   public get doesSelectedSectionExist() {
@@ -97,8 +115,8 @@ export class SectionsEditorComponent {
   public async saveSectionEditChanges() {
     const promises = [];
 
-    if(this.tempBackground) {
-      const ext = this.tempBackground.split(';')[0].slice('data:image\\'.length);
+    if(this.tempSectionBackground) {
+      const ext = this.tempSectionBackground.split(';')[0].slice('data:image\\'.length);
       const backgroundUrl = `/data/biology/background-images/${this.tempSection.title}.${ext}`;
     
       this.tempSection.background = backgroundUrl;
@@ -107,7 +125,7 @@ export class SectionsEditorComponent {
       const filename = `${this.tempSection.title}`;
       
       promises.push(new Promise((resolve, reject) => {
-        base64Img.img(this.tempBackground, dest, filename, (err, filepath) => err ? reject(err) : resolve());
+        base64Img.img(this.tempSectionBackground, dest, filename, (err, filepath) => err ? reject(err) : resolve());
       }));
       
       promises.push(new Promise((resolve, reject) => {
@@ -140,13 +158,18 @@ export class SectionsEditorComponent {
 
     await Promise.all(promises);
 
-    this.cleanAfterEdit();
+    this.cleanAfterSectionEdit();
     this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
   }
 
-  private cleanAfterEdit() {
+  private cleanAfterSectionEdit() {
     this.sectionToEdit = null;
-    this.tempBackground = '';
+    this.tempSectionBackground = '';
+  }
+
+  private cleanAfterNoteEdit() {
+    this.noteToEdit = null;
+    this.tempNoteBackground = '';
   }
 
   private readSectionsFromRepo() {
