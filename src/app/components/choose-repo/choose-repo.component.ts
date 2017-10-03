@@ -16,7 +16,7 @@ export class ChooseRepoComponent {
   public cloneButtonDisabled = false;
 
   constructor(public snackBar: MdSnackBar) {
-    window['repo-location'] = 'matura-biologia';
+    window['repo-location'] = '../../matura-biologia';
 
     if ((window['root-dir'] as string).split('\\').pop() == 'dist') {
       window['repo-location'] = '../matura-biologia';

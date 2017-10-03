@@ -143,9 +143,13 @@ export class SectionsEditorComponent {
 
   public saveNoteContent() {
     fs.writeFile(`matura-biologia${this.tempNoteContentNote.content}`, this.tempNoteContent, (err) => {
-      if(err) console.log(err);
+      if(err) {
+        this.snackBar.open(JSON.stringify(err), 'Ok', { duration: 2*2500, extraClasses: ['dark'] });
+        console.log(err);
+      }
       else this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
     });
+    this.cleanAfterNoteContentEdit();
   }
 
   public async saveSectionEditChanges() {
@@ -169,7 +173,7 @@ export class SectionsEditorComponent {
       }));
     }
 
-    if(this.selectedSection.title !== this.tempSection.title) {
+    if(this.selectedSection.title !== this.tempSection.title && this.selectedSection.title) {
       promises.push(new Promise((resolve, reject) => {
         fs.rename(`matura-biologia/data/biology/notes/${this.selectedSection.title}.json`, `matura-biologia/data/biology/notes/${this.tempSection.title}.json`, (err) => err ? reject(err) : resolve());
       }));
@@ -220,6 +224,15 @@ export class SectionsEditorComponent {
       promises.push(new Promise((resolve, reject) => {
         fs.rename(`matura-biologia${this.selectedNote.content}`, `matura-biologia${this.tempNote.content}`, (err) => err ? reject(err) : resolve());
       }));
+    }
+
+    if(!this.tempNote.content) {
+      this.tempNote.content = `/data/biology/notes/html/${this.tempNote.title}.html`;
+
+      cp.exec(`copy nul "matura-biologia${this.tempNote.content}"`, function(error, stdout, stderr) {
+        console.log('(after creating empty file)');
+        console.log([error, stdout, stderr]);
+      });
     }
 
     const index = this.notes.indexOf(this.selectedNote);
