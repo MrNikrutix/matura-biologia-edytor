@@ -1,4 +1,7 @@
 <md-toolbar color='primary'>
+  <button [disabled]='!canGoBack' md-icon-button (click)='navigateBack()'>
+    <md-icon>arrow_back</md-icon>
+  </button>
   <img src='assets/biologia-logo.png' height='64px' />
   Matura Biologia - narzędzia twórców
 </md-toolbar>

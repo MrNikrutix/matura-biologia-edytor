@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 import { ElectronService } from './providers/electron.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { ElectronService } from './providers/electron.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public electronService: ElectronService) {
+  constructor(public electronService: ElectronService, private location: Location) {
 
     if (electronService.isElectron()) {
       console.log('Mode electron');
@@ -18,5 +19,13 @@ export class AppComponent {
     } else {
       console.log('Mode web');
     }
+  }
+
+  public navigateBack() {
+    this.location.back();
+  }
+
+  public get canGoBack() {
+    return this.location.path() != '';
   }
 }
