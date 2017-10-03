@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "1.9.0",
-  "description": "Angular 4 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "name": "matura-biologia-edytor",
+  "version": "1.0.0",
+  "description": "Edytor danych aplikacji (Biologia matura)",
+  "homepage": "https://github.com/spartanPAGE/matura-biologia-edytor",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Patryk Wertka",
+    "email": "spartanpageagain@gmail.com"
   },
   "keywords": [
     "angular",
