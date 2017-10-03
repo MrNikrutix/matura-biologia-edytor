@@ -116,8 +116,9 @@ export class SectionsEditorComponent {
   }
 
   public smartImage(url: string, alternative: string) {
-    if (!url) return this.defaultBackground;
-    if (alternative) return alternative;
+    if (!url) {
+      return alternative ? alternative : this.defaultBackground;
+    }
     return `./${window['repo-location']}${url}`;
   }
 
