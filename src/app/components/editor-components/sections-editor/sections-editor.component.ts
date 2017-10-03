@@ -56,7 +56,6 @@ export class SectionsEditorComponent {
 
     this.sectionToEdit = section;
     this.tempSection = new Section(section.title, section.subtitle, section.background);
-
     this.tempBackground = '';
 
     if(this.doesSelectedSectionExist) {
@@ -74,23 +73,15 @@ export class SectionsEditorComponent {
   }
 
   public sectionImage(url: string) {
-    if(!url) {
-      return this.defaultBackground;
-    }
-    if(this.tempBackground) {
-      return this.tempBackground;
-    }
+    if (!url) return this.defaultBackground;
+    if (this.tempBackground) return this.tempBackground;
     return `./${window['repo-location']}${url}`;
   }
 
   public onFileSelect(event) {
     if (event.target.files && event.target.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = (e: any) => {
-          this.tempBackground = e.target.result;
-        }
-
+        const reader = new FileReader();
+        reader.onload = (e: any) => { this.tempBackground = e.target.result; }
         reader.readAsDataURL(event.target.files[0]);
     }
   }
