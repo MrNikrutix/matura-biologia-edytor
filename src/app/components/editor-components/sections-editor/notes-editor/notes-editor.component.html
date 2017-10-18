@@ -1,0 +1,22 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    Notatki
+  </mat-expansion-panel-header>
+
+  <mat-expansion-panel *ngFor='let note of notes; let i = index'>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ note.title }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ note.subtitle }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-note-form [note]='note' (update)='updateNote(i, $event)'></app-note-form>
+  </mat-expansion-panel>
+
+  <md-list-item style='display: flex; justify-content: flex-end' class='padding-right'>
+    <button md-icon-button color='primary' (click)='createNewNote()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+  </md-list-item>
+</mat-expansion-panel>

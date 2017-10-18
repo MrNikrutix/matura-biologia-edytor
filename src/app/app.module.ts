@@ -26,7 +26,8 @@ import {
   MatSidenavModule,
   MdFormFieldModule,
   MdInputModule,
-  MatGridListModule
+  MatGridListModule,
+  MatExpansionModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +36,9 @@ import { RepoEditorComponent } from './components/repo-editor/repo-editor.compon
 import { SectionsEditorComponent } from './components/editor-components/sections-editor/sections-editor.component';
 import { RepoStatusComponent } from './components/repo-status/repo-status.component';
 import { RepoPullRequestComponent } from './components/repo-pull-request/repo-pull-request.component';
+import { SectionFormComponent } from './components/editor-components/sections-editor/section-form/section-form.component';
+import { NotesEditorComponent } from './components/editor-components/sections-editor/notes-editor/notes-editor.component';
+import { NoteFormComponent } from './components/editor-components/sections-editor/notes-editor/note-form/note-form.component';
 
 const materialModules = [
   MatButtonModule,
@@ -49,7 +53,8 @@ const materialModules = [
   MatSidenavModule,
   MdFormFieldModule,
   MdInputModule,
-  MatGridListModule
+  MatGridListModule,
+  MatExpansionModule
 ];
 
 @NgModule({
@@ -60,7 +65,10 @@ const materialModules = [
     RepoEditorComponent,
     SectionsEditorComponent,
     RepoStatusComponent,
-    RepoPullRequestComponent
+    RepoPullRequestComponent,
+    SectionFormComponent,
+    NotesEditorComponent,
+    NoteFormComponent
   ],
   imports: [
     BrowserAnimationsModule,

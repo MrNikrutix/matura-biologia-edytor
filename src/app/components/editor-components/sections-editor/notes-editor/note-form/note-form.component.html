@@ -1,0 +1,50 @@
+<mat-expansion-panel #metadataPanel *ngIf='tempNote'>
+  <mat-expansion-panel-header>
+    Edytuj metadane notatki - {{ tempNote.title }}
+  </mat-expansion-panel-header>
+
+  <md-grid-list cols="2" rowHeight="2:1">
+    <md-grid-tile>
+      <div>
+        <md-form-field>
+          <input mdInput placeholder='Tytuł' [(ngModel)]='tempNote.title'>
+          <md-icon mdSuffix>mode_edit</md-icon>
+        </md-form-field>
+        <br>
+        <md-form-field>
+          <input mdInput placeholder='Podtytuł' [(ngModel)]='tempNote.subtitle'>
+          <md-icon mdSuffix>mode_edit</md-icon>
+        </md-form-field>
+        <br>
+        <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
+      </div>
+    </md-grid-tile>
+
+    <md-grid-tile>
+      <md-card style='max-width: 500px'>
+        <img #image style='width: 100%; height: auto;' />
+      </md-card>
+    </md-grid-tile>
+  </md-grid-list>
+
+  <div class='align-content-to-right'>
+    <button md-raised-button [disabled]='!hasBeenEdited' color='primary' (click)='saveNoteChanges()'>Zapisz zmiany</button>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel #contentPanel>
+  <mat-expansion-panel-header>
+    Edytuj treść notatki - {{ tempNote.title }}
+  </mat-expansion-panel-header>
+
+  <textarea class='edit-area raw-text' [(ngModel)]='noteContent'>
+  </textarea>
+
+  <div class='render-area' [innerHtml]='noteContent'>
+  </div>
+  
+  <md-card-actions class='align-content-to-right'>
+    <button md-raised-button color='primary' (click)='saveNoteContent()'>Zapisz</button>
+  </md-card-actions>
+
+</mat-expansion-panel>

@@ -1,4 +1,23 @@
-<md-card>
+<mat-expansion-panel *ngFor='let section of sections; let i = index'>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <md-icon md-list-icon>donut_large</md-icon>
+      {{ section.title }}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{ section.subtitle }}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <app-section-form [section]='section' (update)='updateSection(i, $event)'></app-section-form>
+  <app-notes-editor [section]='section'></app-notes-editor>
+</mat-expansion-panel>
+
+<md-list-item style='display: flex; justify-content: flex-end' class='padding-right'>
+  <button md-icon-button color='primary' (click)='createNewSection()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+</md-list-item>
+
+<!-- <md-card>
   <md-card-title>
     Sekcje
   </md-card-title>
@@ -8,7 +27,7 @@
       <h4 md-line>{{ section.title }}</h4>
       <p md-line>{{ section.subtitle }}</p>
       <p align='right'>
-        <button md-icon-button color='accent' (click)='editSection(section)'><md-icon>mode_edit</md-icon></button>
+        <button md-icon-button color='accent' (click)='selectSection(section)'><md-icon>mode_edit</md-icon></button>
       </p>
     </md-list-item>
     <md-list-item style='display: flex; justify-content: flex-end' class='padding-right'>
@@ -17,107 +36,4 @@
   </md-list>
 </md-card>
 
-<md-card *ngIf='sectionToEdit'>
-  <md-card-title>
-    Edytuj sekcję - {{ sectionToEdit.title }}
-  </md-card-title>
-
-  <md-card-content>
-    <md-grid-list cols="2" rowHeight="2:1">
-      <md-grid-tile>
-        <div>
-          <md-form-field>
-            <input mdInput placeholder='Tytuł' [(ngModel)]='tempSection.title'>
-            <md-icon mdSuffix>mode_edit</md-icon>
-          </md-form-field>
-          <br>
-          <md-form-field>
-            <input mdInput placeholder='Podtytuł' [(ngModel)]='tempSection.subtitle'>
-            <md-icon mdSuffix>mode_edit</md-icon>
-          </md-form-field>
-          <br>
-          <input type='file' placeholder='tło' (change)='onFileSelect($event, "tempSectionBackground")' accept='image/*'>
-        </div>
-      </md-grid-tile>
-
-      <md-grid-tile>
-        <md-card style='max-width: 500px'>
-          <img [src]='smartImage(tempSectionBackground)' style='width: 100%; height: auto;' />
-        </md-card>
-      </md-grid-tile>
-    </md-grid-list>
-  </md-card-content>
-
-  <md-card-actions class='align-content-to-right'>
-    <button md-raised-button [disabled]='!hasSomethingBeenEditedInSelectedSection' color='primary' (click)='saveSectionEditChanges()'>Zapisz zmiany</button>
-  </md-card-actions>
-</md-card>
-
-<md-card *ngIf='sectionToEdit && doesSelectedSectionExist'>
-  <md-card-title>
-    Notatki sekcji
-  </md-card-title>
-
-  <md-list>
-    <md-list-item *ngFor='let note of notes'>
-      <md-icon md-list-icon>description</md-icon>
-      <h4 md-line>{{ note.title }}</h4>
-      <p md-line>{{ note.subtitle }}</p>
-      <div style='display: flex; justify-content: flex-end'>
-        <button md-icon-button color='accent' (click)='editNote(note)'><md-icon>mode_edit</md-icon></button>
-        <button md-icon-button color='accent' (click)='createContentForNote(note)'><md-icon>input</md-icon></button>
-      </div>
-    </md-list-item>
-  </md-list>
-  <md-list-item class='align-content-to-right padding-right'>
-    <button md-icon-button color='primary' (click)='createNewNote()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
-  </md-list-item>
-</md-card>
-
-<md-card *ngIf='noteToEdit'>
-  <md-card-title>
-    Edytuj notkę (metadane) - {{ noteToEdit.title }}
-  </md-card-title>
-
-  <md-card-content>
-    <md-grid-list cols="2" rowHeight="2:1">
-      <md-grid-tile>
-        <div>
-          <md-form-field>
-            <input mdInput placeholder='Tytuł' [(ngModel)]='tempNote.title'>
-            <md-icon mdSuffix>mode_edit</md-icon>
-          </md-form-field>
-          <br>
-          <md-form-field>
-            <input mdInput placeholder='Podtytuł' [(ngModel)]='tempNote.subtitle'>
-            <md-icon mdSuffix>mode_edit</md-icon>
-          </md-form-field>
-          <br>
-          <input type='file' placeholder='tło' (change)='onFileSelect($event, "tempNoteBackground")' accept='image/*'>
-        </div>
-      </md-grid-tile>
-
-      <md-grid-tile>
-        <md-card style='max-width: 500px'>
-          <img [src]='smartImage(tempNoteBackground)' style='width: 100%; height: auto;' />
-        </md-card>
-      </md-grid-tile>
-    </md-grid-list>
-  </md-card-content>
-
-  <md-card-actions class='align-content-to-right'>
-    <button md-raised-button [disabled]='!hasSomethingBeenEditedInSelectedNote' color='primary' (click)='saveNoteEditChanges()'>Zapisz zmiany</button>
-  </md-card-actions>
-</md-card>
-
-<md-card *ngIf='tempNoteContent !== null'>
-  <textarea class='edit-area raw-text' [(ngModel)]='tempNoteContent'>
-  </textarea>
-
-  <div class='render-area' [innerHtml]='tempNoteContent'>
-  </div>
-  
-  <md-card-actions class='align-content-to-right'>
-    <button md-raised-button color='primary' (click)='saveNoteContent()'>Zapisz</button>
-  </md-card-actions>
-</md-card>
+<app-section-form [section]='selectedSection'></app-section-form> -->
