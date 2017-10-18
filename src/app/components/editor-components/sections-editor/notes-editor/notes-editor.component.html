@@ -14,6 +14,7 @@
     </mat-expansion-panel-header>
 
     <app-note-form [note]='note' (update)='updateNote(i, $event)'></app-note-form>
+    <app-quiz-editor [note]='note' (update)='updateNote(i, $event)'></app-quiz-editor>
   </mat-expansion-panel>
 
   <md-list-item style='display: flex; justify-content: flex-end' class='padding-right'>

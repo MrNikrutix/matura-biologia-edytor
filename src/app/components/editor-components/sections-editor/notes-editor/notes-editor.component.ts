@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MdSnackBar } from '@angular/material';
 import { Section } from '../data-types/section';
 import { Note } from '../data-types/note';
 import * as fs from 'fs';
@@ -19,13 +20,14 @@ export class NotesEditorComponent {
   public sectionTitle = '';
   public notes: Note[] = [];
 
-  constructor() { }
+  constructor(private snackBar: MdSnackBar) { }
 
   public updateNote(index, note) {
     console.log('index: ' + index);
     this.notes[index] = note;
     this.notes = [...this.notes];
     fs.writeFileSync(`matura-biologia/data/biology/notes/${this.sectionTitle}.json`, JSON.stringify(this.notes, null, 2));
+    this.snackBar.open('Zapisano', 'Ok', { duration: 2500, extraClasses: ['dark'] });
   }
 
   public createNewNote() {

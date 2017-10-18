@@ -27,7 +27,9 @@ import {
   MdFormFieldModule,
   MdInputModule,
   MatGridListModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSlideToggleModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -39,6 +41,8 @@ import { RepoPullRequestComponent } from './components/repo-pull-request/repo-pu
 import { SectionFormComponent } from './components/editor-components/sections-editor/section-form/section-form.component';
 import { NotesEditorComponent } from './components/editor-components/sections-editor/notes-editor/notes-editor.component';
 import { NoteFormComponent } from './components/editor-components/sections-editor/notes-editor/note-form/note-form.component';
+import { QuizEditorComponent } from './components/editor-components/sections-editor/quiz-editor/quiz-editor.component';
+import { QuizFormComponent } from './components/editor-components/sections-editor/quiz-editor/quiz-form/quiz-form.component';
 
 const materialModules = [
   MatButtonModule,
@@ -54,7 +58,9 @@ const materialModules = [
   MdFormFieldModule,
   MdInputModule,
   MatGridListModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSlideToggleModule,
+  MatCheckboxModule
 ];
 
 @NgModule({
@@ -68,7 +74,9 @@ const materialModules = [
     RepoPullRequestComponent,
     SectionFormComponent,
     NotesEditorComponent,
-    NoteFormComponent
+    NoteFormComponent,
+    QuizEditorComponent,
+    QuizFormComponent
   ],
   imports: [
     BrowserAnimationsModule,

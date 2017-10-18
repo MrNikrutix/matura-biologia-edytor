@@ -1,0 +1,18 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    Edytuj pytania quizu
+  </mat-expansion-panel-header>
+
+  <mat-expansion-panel *ngFor='let quizTask of note.quizTasks; let i = index'>
+      <mat-expansion-panel-header>
+        {{ quizTask.question }}
+      </mat-expansion-panel-header>
+
+      <app-quiz-form [quiz]='quizTask' (update)='updateQuiz(i, $event)'></app-quiz-form>
+  </mat-expansion-panel>
+
+  <md-list-item style='display: flex; justify-content: flex-end' class='padding-right'>
+    <button md-icon-button color='primary' (click)='createNewQuizTasks()'><md-icon style='font-size: 40px'>add_circle</md-icon></button>
+  </md-list-item>
+    
+</mat-expansion-panel>
