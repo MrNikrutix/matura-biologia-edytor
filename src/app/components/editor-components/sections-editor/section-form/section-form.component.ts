@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Input, Output, NgZone, ViewChild, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, Input, Output, NgZone, ViewChild, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Section } from '../data-types/section';
 import { FileHelper } from '../helpers/file-helper';
@@ -11,7 +11,8 @@ import * as path from 'path';
 @Component({
   selector: 'app-section-form',
   templateUrl: './section-form.component.html',
-  styleUrls: ['./section-form.component.scss']
+  styleUrls: ['./section-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SectionFormComponent implements AfterViewInit {
   @Output() public update = new EventEmitter<Section>();
@@ -25,9 +26,6 @@ export class SectionFormComponent implements AfterViewInit {
       this.originalSection = section;
       this.tempSection = new Section(section.title, section.subtitle, section.background);
       this.tempBackground = this.tempSection.background;
-      if(this.image !== undefined) {
-        this.image.nativeElement.src = window['repo-location'] + this.tempBackground;
-      }
     }
   }
 
@@ -41,7 +39,7 @@ export class SectionFormComponent implements AfterViewInit {
   public tempSection: Section = null;
   public tempBackground = '';
 
-  constructor(public snackBar: MdSnackBar, private zone: NgZone) { }
+  constructor(public snackBar: MdSnackBar, private zone: NgZone, private cd: ChangeDetectorRef) { }
 
   public get hasBeenEdited() {
     return JSON.stringify(this.tempSection) !== JSON.stringify(this.originalSection) || this.tempBackground !== this.tempSection.background;
@@ -52,6 +50,7 @@ export class SectionFormComponent implements AfterViewInit {
       this.zone.run(() => {
         this.tempBackground = data;
         this.image.nativeElement.src = data;
+        this.cd.markForCheck();
       })
     });
   }
@@ -100,6 +99,7 @@ export class SectionFormComponent implements AfterViewInit {
     this.tempBackground = this.tempSection.background;
     this.update.emit(this.tempSection);
     this.panel.close();
+    this.cd.markForCheck();
     this.snackBar.open('Gotowe!', 'Ok', { duration: 2500, extraClasses: ['dark'] });
   }
 

@@ -3,29 +3,24 @@
     Edytuj metadane notatki - {{ tempNote.title }}
   </mat-expansion-panel-header>
 
-  <md-grid-list cols="2" rowHeight="2:1">
-    <md-grid-tile>
-      <div>
-        <md-form-field>
-          <input mdInput placeholder='Tytuł' [(ngModel)]='tempNote.title'>
-          <md-icon mdSuffix>mode_edit</md-icon>
-        </md-form-field>
-        <br>
-        <md-form-field>
-          <input mdInput placeholder='Podtytuł' [(ngModel)]='tempNote.subtitle'>
-          <md-icon mdSuffix>mode_edit</md-icon>
-        </md-form-field>
-        <br>
-        <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
-      </div>
-    </md-grid-tile>
+    <md-form-field style='width: 100%'>
+      <input mdInput placeholder='Tytuł' [(ngModel)]='tempNote.title'>
+      <md-icon mdSuffix>mode_edit</md-icon>
+    </md-form-field>
+    <br>
 
-    <md-grid-tile>
-      <md-card style='max-width: 500px'>
-        <img #image style='width: 100%; height: auto;' />
-      </md-card>
-    </md-grid-tile>
-  </md-grid-list>
+    <md-form-field style='width: 100%'>
+      <input mdInput placeholder='Podtytuł' [(ngModel)]='tempNote.subtitle'>
+      <md-icon mdSuffix>mode_edit</md-icon>
+    </md-form-field>
+    <br>
+
+    <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
+    <br>
+
+    <md-card>
+      <img #image style='width: 100%; height: auto;' />
+    </md-card>
 
   <div class='align-content-to-right'>
     <button md-raised-button [disabled]='!hasBeenEdited' color='primary' (click)='saveNoteChanges()'>Zapisz zmiany</button>

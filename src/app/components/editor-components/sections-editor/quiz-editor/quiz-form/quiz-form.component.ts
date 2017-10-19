@@ -1,11 +1,12 @@
-import { Component, Input, NgZone, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, NgZone, ViewChild, AfterViewInit, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Quiz } from '../../data-types/note';
 import { FileHelper } from '../../helpers/file-helper';
 
 @Component({
   selector: 'app-quiz-form',
   templateUrl: './quiz-form.component.html',
-  styleUrls: ['./quiz-form.component.scss']
+  styleUrls: ['./quiz-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuizFormComponent implements AfterViewInit {
   @Output() public update = new EventEmitter<Quiz>();
@@ -31,10 +32,12 @@ export class QuizFormComponent implements AfterViewInit {
   public possibleAnswersFlags: Boolean[] = [];
   public tempImage = '';
   
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) { }
 
   public ngAfterViewInit() {
-    this.image.nativeElement.src = window['repo-location'] + this.tempImage;
+    if (this.tempImage) {
+      this.image.nativeElement.src = window['repo-location'] + this.tempImage;
+    }
   }
 
   public onFileSelect(event: any) {
@@ -42,6 +45,7 @@ export class QuizFormComponent implements AfterViewInit {
       this.zone.run(() => {
         this.tempImage = data;
         this.image.nativeElement.src = data;
+        this.cd.markForCheck();
       })
     });
   }
@@ -49,6 +53,7 @@ export class QuizFormComponent implements AfterViewInit {
   public addPossibleAnswer() {
     this.possibleAnswers = [...(this.possibleAnswers || []), new String(`nowa możliwa odpowiedź (${new Date().getTime()})`)];
     this.possibleAnswersFlags = [...this.possibleAnswersFlags, false];
+    this.cd.markForCheck();
   }
 
   public async saveQuiz() {
@@ -78,6 +83,7 @@ export class QuizFormComponent implements AfterViewInit {
     });
 
     console.log('sending quiz...');
+    this.cd.markForCheck();
     this.update.emit(this.tempQuiz);
   }
 

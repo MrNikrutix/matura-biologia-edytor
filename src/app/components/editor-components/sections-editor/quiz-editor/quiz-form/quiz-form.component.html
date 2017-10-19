@@ -1,12 +1,12 @@
 <div>
-  <md-form-field style='width: 400px'>
+  <md-form-field style='width: 100%'>
     <input mdInput placeholder='Pytanie' [(ngModel)]='tempQuiz.question'>
     <md-icon mdSuffix>mode_edit</md-icon>
   </md-form-field>
   <br>
   <label>Wyjaśnienie</label>
   <br>
-  <textarea class='raw-text' style='width: 400px; height: 100px' [(ngModel)]='tempQuiz.explanation'>
+  <textarea class='raw-text' style='width: 100%; height: 100px' [(ngModel)]='tempQuiz.explanation'>
   </textarea>
   <br>
   <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>

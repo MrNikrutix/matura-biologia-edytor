@@ -9,29 +9,21 @@
     </md-card-title>
 
     <md-card-content>
-      <md-grid-list cols="2" rowHeight="2:1">
-        <md-grid-tile>
-          <div>
-            <md-form-field>
-              <input mdInput placeholder='Tytuł' [(ngModel)]='tempSection.title'>
-              <md-icon mdSuffix>mode_edit</md-icon>
-            </md-form-field>
-            <br>
-            <md-form-field>
-              <input mdInput placeholder='Podtytuł' [(ngModel)]='tempSection.subtitle'>
-              <md-icon mdSuffix>mode_edit</md-icon>
-            </md-form-field>
-            <br>
-            <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
-          </div>
-        </md-grid-tile>
-
-        <md-grid-tile>
-          <md-card style='max-width: 500px'>
-            <img #image style='width: 100%; height: auto;' />
-          </md-card>
-        </md-grid-tile>
-      </md-grid-list>
+      <md-form-field style='width: 100%'>
+        <input mdInput placeholder='Tytuł' [(ngModel)]='tempSection.title'>
+        <md-icon mdSuffix>mode_edit</md-icon>
+      </md-form-field>
+      <br>
+      <md-form-field style='width: 100%'>
+        <input mdInput placeholder='Podtytuł' [(ngModel)]='tempSection.subtitle'>
+        <md-icon mdSuffix>mode_edit</md-icon>
+      </md-form-field>
+      <br>
+      <input type='file' placeholder='tło' (change)='onFileSelect($event)' accept='image/*'>
+      <br>
+      <md-card>
+        <img #image style='width: 100%; height: auto;' />
+      </md-card>
     </md-card-content>
 
     <md-card-actions class='align-content-to-right'>
