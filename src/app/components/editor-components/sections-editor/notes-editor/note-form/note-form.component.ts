@@ -52,7 +52,7 @@ export class NoteFormComponent implements AfterViewInit {
 
   constructor(private zone: NgZone, private snackBar: MdSnackBar) { }
 
-  public onFileSelect(event: any, cb) {
+  public onFileSelect(event: any) {
     FileHelper.onFileSelect(event, (data) => {
       this.zone.run(() => {
         this.tempBackground = data;

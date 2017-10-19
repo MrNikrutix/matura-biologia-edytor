@@ -37,7 +37,7 @@ export class QuizFormComponent implements AfterViewInit {
     this.image.nativeElement.src = window['repo-location'] + this.tempImage;
   }
 
-  public onFileSelect(event: any, cb) {
+  public onFileSelect(event: any) {
     FileHelper.onFileSelect(event, (data) => {
       this.zone.run(() => {
         this.tempImage = data;
